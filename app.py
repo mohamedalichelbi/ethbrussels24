@@ -24,6 +24,7 @@ def get_account_info(account_id):
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
@@ -52,7 +53,7 @@ def explain_tx(tx_hash):
     completion = oai_client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "Eli5 and summarize what a NEAR blockchain transaction is doing based on its data, do not mention technical details. Be concise, and only include details relevant to the main intention behind the transaction"},
+            {"role": "system", "content": "Eli5 and summarize what a NEAR blockchain transaction is doing based on its data, do not mention technical details. Be concise, and only include details relevant to the main intention behind the transaction. Response must be in HTML format"},
             {
                 "role": "user",
                 "content": f"""Helpful information:\nTx data: {parsed_tx_str}\nAddress info: {addr_to_info}\nClub info: CLUB	WEALTH RANGE
@@ -67,3 +68,6 @@ def explain_tx(tx_hash):
         ]
     )
     return { "gpt_res": completion.choices[0].message.content }
+
+if __name__ == "__main__":
+    app.run(debug=True, host="192.168.68.91", port=5000)
